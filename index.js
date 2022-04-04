@@ -41,6 +41,19 @@ app.put("/usuarios/:id", (request, response) => {
   return response.json(updateUser);
 });
 
+app.delete("/usuarios/:id", (request, response) => {
+  const { id } = request.params;
+
+  const indexUser = users.findIndex((user) => user.id === id);
+
+  if (indexUser < 0) {
+    return response.status(404).send("User not found");
+  }
+
+  users.splice(indexUser, 1);
+  return response.status(204).json();
+});
+
 app.listen(port, () => {
   console.log("server running ✔");
 });
