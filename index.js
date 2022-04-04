@@ -21,11 +21,24 @@ app.post("/usuarios", (request, response) => {
 
   users.push(user);
 
-  return response.json(user);
+  return response.status(201).json(user);
 });
 
-app.put("/usuarios", (request, response) => {
-  return response.json({ msg: "ok" });
+app.put("/usuarios/:id", (request, response) => {
+  const { id } = request.params;
+
+  const { name, age } = request.body;
+
+  const updateUser = { id, name, age };
+
+  const index = users.findIndex((user) => user.id === id);
+
+  if (index < 0) {
+    return response.status(404).json({ message: "user not found." });
+  }
+  users[index] = updateUser;
+
+  return response.json(updateUser);
 });
 
 app.listen(port, () => {
